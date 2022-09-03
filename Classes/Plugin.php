@@ -42,16 +42,17 @@ class Plugin extends \Phile\Plugin\AbstractPlugin implements \Phile\Gateway\Even
 	private function filter_content($content, $title) {
 		if (!isset($content)) return null; // return nothing if no content is available for processing
 
-		$list = '<'.$this->settings['wrap_element'].' class="'.$this->settings['wrap_class'].'">'; // Initial opening of the list group
-		$list .= '<'.$this->settings['title_element'].' class="'.$this->settings['title_class'].'">'.$title.'</'.$this->settings['title_element'].'>'; // Adding a title element to the list using the metatag name
+		if ($this->settings['title_element']) $title = ucfirst($title);
+		$title .= $this->settings['title_character'];
 
-		$items = explode(',', $content); // Create array of items to be added to the list
+		$list = '<'.$this->settings['title_element'].' class="'.$this->settings['title_class'].'">'.$title.'</'.$this->settings['title_element'].'>';
+		$items = explode(',', $content);
 		foreach($items as $item) {
-			$list .= '<li class="'.$this->settings['item_class'].'>'.$item.'</li>'; // Add the items to the list
+			$list .= '<li class="'.$this->settings['item_class'].'">'.$item.'</li>';
 		}
 
-		$list = '</'.$this->settings['wrap_element'].'>'; // Close out the list group
+		$content = '<'.$this->settings['list_element'].' class="'.$this->settings['list_class'].'">'.$list.'</'.$this->settings['list_element'].'>';
 
-		return $list; // return processed data
+		return $content; // return processed data
 	}
 }
