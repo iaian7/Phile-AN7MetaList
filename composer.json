@@ -1,0 +1,27 @@
+{
+	"name": "an7/meta-list",
+	"type": "phile-plugin",
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Converts comma separated meta tags into HTML lists",
+    "homepage": "http://iaian7.com",
+    "keywords": ["cms","phile","content","meta","tag","embed","list"],
+    "authors": [
+        {
+            "name": "James Doyle",
+            "email": "james2doyle@gmail.com",
+            "homepage": "http://ohdoylerules.com/",
+            "role": "Developer"
+        },
+        {
+            "name": "John Einselen",
+            "email": "john.einselen@gmail.com",
+            "homepage": "http://iaian7.com/",
+            "role": "Developer"
+        }
+    ],
+	"require": {
+        "phile-cms/phile": ">=1",
+        "phile-cms/plugin-installer-plugin": ">=1"
+	}
+}
