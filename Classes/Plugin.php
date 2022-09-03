@@ -4,11 +4,14 @@
  */
 
 namespace Phile\Plugin\An7\MetaList;
+
+use Phile\Gateway\EventObserverInterface;
+use Phile\Plugin\AbstractPlugin;
 use Phile\Exception;
 
 /**
   * MetaList
-  * version 0.1 modified 2019.09.07
+  * version 0.5 modified 2020.12.12
   *
   * Meta tags:
   * 	"tools" = commas converted into list items
@@ -21,20 +24,18 @@ use Phile\Exception;
   *
   */
 
-class Plugin extends \Phile\Plugin\AbstractPlugin implements \Phile\Gateway\EventObserverInterface {
+class Plugin extends AbstractPlugin implements EventObserverInterface
+{
 
-	public function __construct() {
-		\Phile\Event::registerEvent('after_read_file_meta', $this); // May want to use this instead of changing the raw content, should be safer and allows creation of new meta data.
-	}
+	protected $events = ['after_read_file_meta' => 'processMeta'];
 
-	public function on($eventKey, $data = null) {
-		if ($eventKey == 'after_read_file_meta') { // If preview or media meta data exists, start processing!
-			$metatags = explode(',', $this->settings['meta_tags']);
+	protected function processMeta($data)
+	{
+		$metatags = explode(',', $this->settings['meta_tags']);
 
-			foreach($metatags as $metatag) {
-				if (isset($data['meta'][$metatag])) { // If this specific metatag exists
-					$data['meta'][$metatag] = $this->filter_content($data['meta'][$metatag], $metatag); // Split it at the commas and wrap each element as a list item
-				}
+		foreach($metatags as $metatag) {
+			if (isset($data['meta'][$metatag])) { // If this specific metatag exists
+				$data['meta'][$metatag] = $this->filter_content($data['meta'][$metatag], $metatag); // Split it at the commas and wrap each element as a list item
 			}
 		}
 	}
