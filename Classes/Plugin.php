@@ -33,22 +33,23 @@ class Plugin extends \Phile\Plugin\AbstractPlugin implements \Phile\Gateway\Even
 
 			foreach($metatags as $metatag) {
 				if (isset($data['meta'][$metatag])) { // If this specific metatag exists
-					$data['meta'][$metatag] = $this->filter_content($data['meta'][$metatag]); // Split it at the commas and wrap each element as a list item
+					$data['meta'][$metatag] = $this->filter_content($data['meta'][$metatag], $metatag); // Split it at the commas and wrap each element as a list item
 				}
 			}
 		}
 	}
 
-	private function filter_content($content) {
+	private function filter_content($content, $title) {
 		if (!isset($content)) return null; // return nothing if no content is available for processing
 
 		$list = '';
 		$items = explode(',', $content);
 		foreach($items as $item) {
-			$list = $list.'<li>'.$item.'</li>';
+			$list = $list.'<li class="'.$this->settings['item_class'].'>'.$item.'</li>';
 		}
 
-		$content = '<'.$this->settings['wrap_element'].' class="'.$this->settings['wrap_class'].'">'.$list.'</'.$this->settings['wrap_element'].'>';
+		$content = '<'.$this->settings['wrap_element'].' class="'.$this->settings['wrap_class'].'"><'.$this->settings['title_element'].' class="'.$this->settings['title_class'].'">'.$title.'</'.$this->settings['title_element'].'>'.$list.'</'.$this->settings['wrap_element'].'>';
+
 		return $content; // return processed data
 	}
 }
